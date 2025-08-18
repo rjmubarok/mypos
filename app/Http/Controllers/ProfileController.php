@@ -13,6 +13,9 @@ class ProfileController extends Controller
     public function profile(){
        return view('backend.user.profile');
     }
+    public function passwordChange(){
+       return view('backend.user.change_password');
+    }
      public function update(Request $request)
     {
         $user = User::find(auth()->id()); // current logged in user update করব

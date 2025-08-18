@@ -1,7 +1,7 @@
 <div id="left-sidebar" class="sidebar">
     <div class="">
         <div class="user-account">
-            <img src="https://www.google.com/imgres?q=picture&imgurl=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fthumbnails%2F036%2F324%2F708%2Fsmall%2Fai-generated-picture-of-a-tiger-walking-in-the-forest-photo.jpg&imgrefurl=https%3A%2F%2Fwww.vecteezy.com%2Ffree-photos%2Fpicture&docid=wska7sM6RxRdCM&tbnid=crGgp78bfBsQFM&vet=12ahUKEwiDl_Dh3JOPAxVvR2wGHSNYPDgQM3oECBYQAA..i&w=300&h=200&hcb=2&ved=2ahUKEwiDl_Dh3JOPAxVvR2wGHSNYPDgQM3oECBYQAA" class="rounded-circle user-photo" alt="User Profile Picture">
+            <img src="{{ auth()->user()->photo ?? '/assets/images/user.png' }}" class="rounded-circle user-photo" alt="User Profile Picture">
             <div class="dropdown">
 
                 <a href="javascript:void(0);" class="dropdown-toggle user-name"
@@ -9,7 +9,7 @@
                     </strong></a>
                 <ul class="dropdown-menu dropdown-menu-right account">
                     <li><a href="{{ route('profile') }}"><i class="fas fa-user"></i> My Profile</a></li>
-                    <li><a href="app-inbox.html"><i class="fas fa-envelope-open"></i> Messages</a></li>
+                    <li><a href="{{ route('password_change') }}"><i class="fas fa-envelope-open"></i>Change Password</a></li>
                     <li><a href="javascript:void(0);"><i class="fas fa-cog"></i> Settings</a></li>
                     <li class="divider"></li>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

@@ -130,43 +130,7 @@
                 </div>
 
                 <!-- Account Data & Password -->
-                <div class="card mb-3 shadow-sm">
-                    <form id="UserPassword">
-
-                        <div class="card-body">
-                            <h6 class="mb-3">Account Data</h6>
-                            <div class="row">
-                                <div class="col-12 mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" id="email" class="form-control"
-                                        value="{{ auth()->user()->email ?? '' }}" disabled>
-                                </div>
-                            </div>
-                            <h6 class="mt-4 mb-3">Change Password</h6>
-                            <div class="row">
-                                <div class="col-12 col-md-4 mb-3">
-                                    <label for="current_password" class="form-label">Current Password</label>
-                                    <input type="password" name="oldpassword" id="current_password" class="form-control"
-                                        placeholder="Enter Current Password">
-                                </div>
-                                <div class="col-12 col-md-4 mb-3">
-                                    <label for="new_password" class="form-label">New Password</label>
-                                    <input type="password" name="newpassword" id="new_password" class="form-control"
-                                        placeholder="Enter New Password">
-                                </div>
-                                <div class="col-12 col-md-4 mb-3">
-                                    <label for="confirm_password" class="form-label">Confirm New Password</label>
-                                    <input type="password" name="newpassword_confirmation" id="confirm_password"
-                                        class="form-control" placeholder="Confirm New Password">
-                                </div>
-                            </div>
-                            <div class="mt-3">
-                                <button type="submit" class="btn btn-primary me-2">Update</button>
-                                <button type="button" class="btn btn-secondary">Cancel</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                
 
             </div>
 
@@ -219,45 +183,7 @@
             });
         });
     </script>
-<script>
-$("#UserPassword").on("submit", function(e) {
-    e.preventDefault();
 
-    let formData = $(this).serialize(); // file নেই, serialize ঠিক
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
-    $.ajax({
-        url: "{{ route('profilepasswordUpadte') }}", // route name ঠিক আছে কিনা চেক করুন
-        type: "POST",
-        data: formData,
-        success: function(res) {
-            if (res.status) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: res.message,
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-                $("#UserPassword")[0].reset();
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: res.message,
-                });
-            }
-        }, // ✅ এখানে comma লাগবে
-        error: function(xhr) {
-            let err = JSON.parse(xhr.responseText);
-            alert(err.message || 'Something went wrong!');
-        }
-    });
-});
-</script>
 
 
 @endsection
