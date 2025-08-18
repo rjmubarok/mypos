@@ -5,4 +5,5 @@
 <script src="{{ asset('backendcss/toastr.js') }}"></script>
 <script src="{{ asset('backendcss/mainscripts.bundle.js') }}"></script>
 <script src="{{ asset('backendcss/index.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @yield('scripts')

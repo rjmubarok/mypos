@@ -59,16 +59,17 @@
 
                 <!-- Basic Information -->
                 <div class="card mb-3 shadow-sm">
-                   <form id="userForm">
-                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                       <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                    <form id="userForm">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                         <div class="card-body">
                             <h6 class="mb-3">Basic Information</h6>
                             <div class="row">
 
                                 <div class="col-12 col-md-6 mb-3">
                                     <label for="name" class="form-label"> Name</label>
-                                    <input type="text" id="name" value="{{ auth()->user()->name ?? '' }}" name="name" class="form-control" placeholder="Enter  Name">
+                                    <input type="text" id="name" value="{{ auth()->user()->name ?? '' }}"
+                                        name="name" class="form-control" placeholder="Enter  Name">
                                 </div>
                                 <div class="col-12 col-md-6 mb-3">
                                     <label for="phone" class="form-label">Phone Number</label>
@@ -89,26 +90,31 @@
                                 <div class="col-12 col-md-6 mb-3">
                                     <label for="birthdate" class="form-label"> Date Of Birth</label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="icon-calendar"></i></span>
-                                        <input type="date" id="birthdate" name="dob" class="form-control" value="{{ auth()->user()->dob ?? '' }}">
+                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                        <input type="date" id="birthdate" name="dob" class="form-control"
+                                            value="{{ auth()->user()->dob ?? '' }}">
                                     </div>
                                 </div>
 
                                 <div class="col-12 col-md-6 mb-3">
                                     <label for="address1" class="form-label">Photo </label>
-                                    <input class="form-control " type="file" name="photo" id="formFile" accept="image/*"
-                                        onchange="previewFile(this)">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-file-upload"></i></span>
+                                        <input class="form-control " type="file"
+                                            value="{{ auth()->user()->photo ?? '' }}" name="photo" id="formFile"
+                                            accept="image/*" onchange="previewFile(this)">
 
+                                    </div>
                                 </div>
 
 
                                 <div class="col-12 col-md-6 mb-3">
                                     <label for="address1" class="form-label">Address Line </label>
-                                    <input type="text" id="address1" name="address" class="form-control"
-                                        placeholder="Enter Address Line 1">
+                                    <input type="text" id="address1" value="{{ auth()->user()->address ?? '' }}"
+                                        name="address" class="form-control" placeholder="Enter Address">
                                 </div>
                                 <div class="mb-3">
-                                    <img id="previewImg" src="https://via.placeholder.com/150"
+                                    <img id="previewImg" src="{{ auth()->user()->photo ?? '/assets/images/user.png' }}"
                                         class="rounded-circle img-thumbnail" alt="Profile Picture" width="150"
                                         height="150">
                                 </div>
@@ -125,44 +131,41 @@
 
                 <!-- Account Data & Password -->
                 <div class="card mb-3 shadow-sm">
-                    <div class="card-body">
-                        <h6 class="mb-3">Account Data</h6>
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" id="username" class="form-control" value="alizeethomas" disabled>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" id="email" class="form-control"
-                                    value="alizee.info@yourdomain.com">
-                            </div>
+                    <form id="UserPassword">
 
-                        </div>
-
-                        <h6 class="mt-4 mb-3">Change Password</h6>
-                        <div class="row">
-                            <div class="col-12 col-md-4 mb-3">
-                                <label for="current_password" class="form-label">Current Password</label>
-                                <input type="password" id="current_password" class="form-control"
-                                    placeholder="Enter Current Password">
+                        <div class="card-body">
+                            <h6 class="mb-3">Account Data</h6>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" id="email" class="form-control"
+                                        value="{{ auth()->user()->email ?? '' }}" disabled>
+                                </div>
                             </div>
-                            <div class="col-12 col-md-4 mb-3">
-                                <label for="new_password" class="form-label">New Password</label>
-                                <input type="password" id="new_password" class="form-control"
-                                    placeholder="Enter New Password">
+                            <h6 class="mt-4 mb-3">Change Password</h6>
+                            <div class="row">
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="current_password" class="form-label">Current Password</label>
+                                    <input type="password" name="oldpassword" id="current_password" class="form-control"
+                                        placeholder="Enter Current Password">
+                                </div>
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="new_password" class="form-label">New Password</label>
+                                    <input type="password" name="newpassword" id="new_password" class="form-control"
+                                        placeholder="Enter New Password">
+                                </div>
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="confirm_password" class="form-label">Confirm New Password</label>
+                                    <input type="password" name="newpassword_confirmation" id="confirm_password"
+                                        class="form-control" placeholder="Confirm New Password">
+                                </div>
                             </div>
-                            <div class="col-12 col-md-4 mb-3">
-                                <label for="confirm_password" class="form-label">Confirm New Password</label>
-                                <input type="password" id="confirm_password" class="form-control"
-                                    placeholder="Confirm New Password">
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-primary me-2">Update</button>
+                                <button type="button" class="btn btn-secondary">Cancel</button>
                             </div>
                         </div>
-                        <div class="mt-3">
-                            <button type="button" class="btn btn-primary me-2">Update</button>
-                            <button type="button" class="btn btn-secondary">Cancel</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
 
             </div>
@@ -172,7 +175,7 @@
     </div>
 @endsection
 @section('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         // Image preview function
         function previewFile(input) {
@@ -188,27 +191,73 @@
 
 
 
-$("#userForm").on("submit", function (e) {
-        e.preventDefault();
+        $("#userForm").on("submit", function(e) {
+            e.preventDefault();
 
-        let formData = new FormData(this); // file সহ সব data যাবে
+            let formData = new FormData(this); // file সহ সব data যাবে
 
-        $.ajax({
-            url: "/profile/update",   // আপনার backend route
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (res) {
-                alert("User info updated successfully!");
-                console.log(res);
-            },
-            error: function (xhr) {
-                alert("Update failed!");
-                console.log(xhr.responseText);
-            }
+            $.ajax({
+                url: "/password/update", // আপনার backend route
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(res) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: res.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    location.reload();
+                },
+                error: function(xhr) {
+                    alert("Update failed!");
+                    console.log(xhr.responseText);
+                }
+            });
         });
-    });
     </script>
+<script>
+$("#UserPassword").on("submit", function(e) {
+    e.preventDefault();
+
+    let formData = $(this).serialize(); // file নেই, serialize ঠিক
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+    $.ajax({
+        url: "{{ route('profilepasswordUpadte') }}", // route name ঠিক আছে কিনা চেক করুন
+        type: "POST",
+        data: formData,
+        success: function(res) {
+            if (res.status) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: res.message,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                $("#UserPassword")[0].reset();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: res.message,
+                });
+            }
+        }, // ✅ এখানে comma লাগবে
+        error: function(xhr) {
+            let err = JSON.parse(xhr.responseText);
+            alert(err.message || 'Something went wrong!');
+        }
+    });
+});
+</script>
+
 
 @endsection
