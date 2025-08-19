@@ -36,9 +36,17 @@
                                         <td><img src="{{ $category->image }}" alt="" width="50"></td>
                                         <td>
                                             @if ($category->status == 1)
-                                                <span class="badge bg-success">Active</span>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input status-toggle" type="checkbox"
+                                                        role="switch" data-id="{{ $category->id }}" checked>
+                                                    <label class="form-check-label text-success">Active</label>
+                                                </div>
                                             @else
-                                                <span class="badge bg-danger">Inactive</span>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input status-toggle" type="checkbox"
+                                                        role="switch" data-id="{{ $category->id }}">
+                                                    <label class="form-check-label text-danger">Inactive</label>
+                                                </div>
                                             @endif
                                         </td>
                                         <td>
@@ -226,7 +234,7 @@
                         success: function(res) {
                             Swal.fire("Deleted!", res.message, "success");
                             // Optionally remove row from table
-                           location.reload();
+                            location.reload();
                         },
                         error: function(xhr) {
                             Swal.fire("Error!", "Something went wrong.", "error");
@@ -236,4 +244,28 @@
             });
         });
     </script>
+  <script>
+$(document).on('change', '.status-toggle', function() {
+    let id = $(this).data('id');
+    let status = $(this).is(':checked') ? 1 : 0;
+    let label = $(this).closest('.form-check').find('.form-check-label');
+
+    $.ajax({
+        url: "{{ route('category.status.update') }}",
+        type: "POST",
+        data: {
+            _token: "{{ csrf_token() }}",
+            id: id,
+            status: status
+        },
+        success: function(res) {
+            if(res.success){
+                label.text(res.status == 1 ? 'Active' : 'Inactive');
+                label.removeClass('text-success text-danger')
+                     .addClass(res.status == 1 ? 'text-success' : 'text-danger');
+            }
+        }
+    });
+});
+</script>
 @endsection
