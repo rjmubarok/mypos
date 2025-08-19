@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use File;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
     public function profile(){
-       return view('backend.user.profile');
+       return view('backend.users.profile');
     }
     public function passwordChange(){
        return view('backend.user.change_password');
@@ -28,7 +28,7 @@ class ProfileController extends Controller
         $user->dob = $request->dob;
         $user->address = $request->address;
 
-   
+
          if ($request->hasFile('photo')) {
             $destanation = $user->photo;
             //return  $destanation;

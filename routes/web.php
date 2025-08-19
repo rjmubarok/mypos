@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/password-change', [ProfileController::class, 'passwordChange'])->name('password_change');
     Route::post('/password/update', [ProfileController::class, 'PasswordUpdate'])->name('profilepasswordUpadte');
+
+   Route::get('category', [CategoryController::class, 'index'])->name('category.index');
+   Route::post('category-store', [CategoryController::class, 'store'])->name('category.store');
+   Route::get('category/edit/{slug}', [CategoryController::class, 'edit'])->name('category.edit');
+   Route::post('category/update', [CategoryController::class, 'update'])->name('category.update');
+   Route::delete('category/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+
 });
 
 // User routes
