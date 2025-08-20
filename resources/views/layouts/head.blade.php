@@ -23,10 +23,10 @@
     <link href="{{ asset('/assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/quill/quill.snow.css')}}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/quill/quill.bubble.css')}}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
-    <link href="{{ asset('assets/vendor/simple-datatables/style.css')}}" rel="stylesheet">
+     <link href="{{ asset('assets/vendor/quill/quill.snow.css')}}" rel="stylesheet"> 
+     <link href="{{ asset('assets/vendor/quill/quill.bubble.css')}}" rel="stylesheet"> 
+     <link href="{{ asset('assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet"> 
+     <link href="{{ asset('assets/vendor/simple-datatables/style.css')}}" rel="stylesheet"> 
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     <link href="{{ asset('assets/css/style.css')}}" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">

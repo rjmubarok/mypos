@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BrandController;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
    Route::delete('category/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
    Route::post('/category/status-update', [CategoryController::class, 'statusUpdate'])
      ->name('category.status.update');
+     // brand
+     Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
+Route::post('/brands/store', [BrandController::class, 'store'])->name('brands.store');
+Route::get('/brands/edit/{id}', [BrandController::class, 'edit'])->name('brands.edit');
+Route::post('/brands/update/{id}', [BrandController::class, 'update'])->name('brands.update');
+Route::delete('/brands/delete/{id}', [BrandController::class, 'destroy'])->name('brands.destroy');
+Route::post('/brands/status-update', [BrandController::class, 'statusUpdate'])->name('brands.status.update');
 
 });
 

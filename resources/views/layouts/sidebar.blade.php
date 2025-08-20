@@ -53,6 +53,12 @@
                 <span>Category</span>
             </a>
         </li>
+        <li class="nav-item  {{ request()->routeIs('brands.index') ? 'active' : '' }} ">
+            <a class="nav-link" href="{{ route('brands.index') }}">
+                <i class="bi bi-house"></i>
+                <span>Brand</span>
+            </a>
+        </li>
 
 
     </ul>
