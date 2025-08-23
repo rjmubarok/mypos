@@ -4,7 +4,7 @@
     {{-- <div class="loader">
         <img src="{{ asset('assets/img/preloader.gif')}}" alt="load">
     </div> --}}
-    {{--  @include('sweetalert::alert')  --}}
+    @include('sweetalert::alert')
 
     @include('layouts.header')
     @include('layouts.sidebar')

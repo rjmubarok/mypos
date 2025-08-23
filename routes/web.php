@@ -5,6 +5,8 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -45,7 +47,10 @@ Route::get('/brands/edit/{id}', [BrandController::class, 'edit'])->name('brands.
 Route::post('/brands/update/{id}', [BrandController::class, 'update'])->name('brands.update');
 Route::delete('/brands/delete/{id}', [BrandController::class, 'destroy'])->name('brands.destroy');
 Route::post('/brands/status-update', [BrandController::class, 'statusUpdate'])->name('brands.status.update');
-
+Route::resource('supplier', SupplierController::class);
+Route::post('/supplier/status-update', [SupplierController::class, 'statusUpdate'])->name('supplier.status.update');
+Route::resource('product', ProductController::class);
+Route::post('/product/status-update', [ProductController::class, 'statusUpdate'])->name('product.status.update');
 });
 
 // User routes

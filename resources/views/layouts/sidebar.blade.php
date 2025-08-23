@@ -59,6 +59,18 @@
                 <span>Brand</span>
             </a>
         </li>
+        <li class="nav-item  {{ request()->routeIs('product.index') ? 'active' : '' }} ">
+            <a class="nav-link" href="{{ route('product.index') }}">
+                <i class="bi bi-house"></i>
+                <span>Product</span>
+            </a>
+        </li>
+        <li class="nav-item  {{ request()->routeIs('supplier.index') ? 'active' : '' }} ">
+            <a class="nav-link" href="{{ route('supplier.index') }}">
+                <i class="bi bi-house"></i>
+                <span>Supplier</span>
+            </a>
+        </li>
 
 
     </ul>
