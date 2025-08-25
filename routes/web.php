@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,7 @@ Route::resource('supplier', SupplierController::class);
 Route::post('/supplier/status-update', [SupplierController::class, 'statusUpdate'])->name('supplier.status.update');
 Route::resource('product', ProductController::class);
 Route::post('/product/status-update', [ProductController::class, 'statusUpdate'])->name('product.status.update');
+Route::resource('sale', SaleController::class);
 });
 
 // User routes
