@@ -24,7 +24,7 @@
                         <td>{{ $brand->name }}</td>
                         <td>
                             @if ($brand->logo)
-                                <img src="{{  $brand->logo }}" width="50" alt="">
+                                <img src="{{ $brand->logo }}" width="50" alt="">
                             @endif
                         </td>
                         <td>
@@ -67,11 +67,10 @@
                             <input type="file" name="logo" id="logo" class="form-control">
                         </div>
                         <div class=" mb-3 form-check ">
-                                        <input class="form-check-input" type="checkbox" name="status" id="status"
-                                            value="{{ $brand->status }}"
-                                            >
-                                        <label class="form-check-label" for="status">Active</label>
-                                    </div>
+                            <input class="form-check-input" type="checkbox" name="status" id="status"
+                                value="{{ $brand->status ?? '' }}">
+                            <label class="form-check-label" for="status">Active</label>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary" id="saveBtn">Save</button>
@@ -151,7 +150,7 @@
 
             // Delete Brand
             $(document).on('click', '.deleteBrand', function() {
- let id = $(this).data('id');
+                let id = $(this).data('id');
                 Swal.fire({
                     title: "Are you sure?",
                     text: "This action cannot be undone!",

@@ -77,6 +77,12 @@
                 <span>Supplier</span>
             </a>
         </li>
+        <li class="nav-item  {{ request()->routeIs('customer.index') ? 'active' : '' }} ">
+            <a class="nav-link" href="{{ route('customer.index') }}">
+                <i class="bi bi-house"></i>
+                <span>Customer</span>
+            </a>
+        </li>
 
 
     </ul>

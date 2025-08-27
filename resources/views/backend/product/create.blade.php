@@ -79,7 +79,7 @@
                                 <div class="col-md-3 mb-3">
                                     <label for="purchase_price" class="form-label">Purchase Price <span
                                             class="text-danger">*</span></label>
-                                    <input type="number" step="0.01" name="purchase_price" id="purchase_price"
+                                    <input type="number"  name="purchase_price" id="purchase_price"
                                         class="form-control" value="{{ old('purchase_price', '0.00') }}">
                                 </div>
 
@@ -87,7 +87,7 @@
                                 <div class="col-md-3 mb-3">
                                     <label for="selling_price" class="form-label">Selling Price <span
                                             class="text-danger">*</span></label>
-                                    <input type="number" step="0.01" name="selling_price" id="selling_price"
+                                    <input type="number"  name="selling_price" id="selling_price"
                                         class="form-control" value="{{ old('selling_price', '0.00') }}">
                                 </div>
 

@@ -94,7 +94,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    
+
 
 public function update(Request $request, Product $product)
 {
@@ -142,7 +142,7 @@ public function update(Request $request, Product $product)
 
     // Update the product
     $status=$product->update($data);
- 
+
         if ($status) {
             toast('Product updated successfully', 'success');
             return redirect()->route('product.index');
@@ -150,15 +150,16 @@ public function update(Request $request, Product $product)
 
             return back()->with('error', 'Something went wrong !');
         }
-    
+
 }
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy( $id)
     {
+        $product = Product::findOrFail($id);
         $destanation = $product->image;
         //return  $destanation;
         if (File::exists($destanation)) {
@@ -176,4 +177,29 @@ public function update(Request $request, Product $product)
 
         return response()->json(['success' => true, 'status' => $product->status]);
     }
+
+
+
+    public function search(Request $request)
+{
+    $query = $request->get('q', '');
+
+    $products = \App\Models\Product::where('name', 'like', "%{$query}%")
+                 ->orWhere('sku', 'like', "%{$query}%")
+                 ->limit(5)
+                 ->get();
+
+    $result = [];
+    foreach ($products as $product) {
+        $result[] = [
+            'id' => $product->id,
+            'text' => $product->name . ' ('.$product->selling_price.')',
+            'price' => $product->selling_price,
+            'stock' => $product->stock,
+        ];
+    }
+
+    return response()->json($result);
+}
+
 }
