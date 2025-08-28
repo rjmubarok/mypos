@@ -13,16 +13,14 @@ return new class extends Migration
     {
         Schema::create('sale_payments', function (Blueprint $table) {
             $table->id();
-              
-            $table->foreignId('sale_id')->constrained('sales')->cascadeOnDelete();
+$table->unsignedBigInteger('sale_id')->nullable();
+            $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');;
             $table->dateTime('paid_at');
             $table->decimal('amount', 16, 2);
             $table->string('method'); // cash/card/bkash/nagad/bank
             $table->string('txn_id')->nullable();
             $table->text('note')->nullable();
             $table->timestamps();
-
-            $table->index(['sale_id','paid_at']);
             $table->softDeletes();
         });
     }

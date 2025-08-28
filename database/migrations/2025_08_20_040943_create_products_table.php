@@ -19,7 +19,7 @@ return new class extends Migration
 
         $table->string('name'); // Product Name
         $table->string('slug')->unique(); // SEO Friendly Slug
-        $table->string('sku')->unique()->nullable(); // Stock Keeping Unit / Code
+        $table->string('sku')->nullable(); // Stock Keeping Unit / Code
         $table->string('barcode')->nullable();
         $table->text('description')->nullable();
         $table->string('image')->nullable();
@@ -31,8 +31,8 @@ return new class extends Migration
         $table->timestamps();
         // Foreign Keys
         $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-        $table->foreign('brand_id')->references('id')->on('brands')->onDelete('set null');
-        $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('set null');
+        $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
+        $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
     });
     }
 

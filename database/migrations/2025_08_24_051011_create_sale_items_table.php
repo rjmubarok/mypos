@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('sale_items', function (Blueprint $table) {
            $table->id();
-            $table->foreignId('sale_id')->constrained('sales')->cascadeOnDelete();
-            $table->foreignId('product_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
-           
+           $table->unsignedBigInteger('sale_id')->nullable();
+           $table->unsignedBigInteger('product_id')->nullable();
+            $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+
 
             // pricing snapshot (don’t rely on product table later)
             $table->string('product_name');
@@ -24,7 +26,7 @@ return new class extends Migration
             $table->string('unit')->nullable(); // pcs, kg, etc.
 
             $table->decimal('unit_price', 16, 4);          // selling price before line discounts
-           
+
 
             $table->decimal('tax_percent', 8, 4)->default(0);
             $table->decimal('tax_amount', 16, 4)->default(0);
@@ -33,7 +35,7 @@ return new class extends Migration
 
             $table->timestamps();
   $table->softDeletes();
-            $table->index(['sale_id','product_id']);
+
         });
     }
 

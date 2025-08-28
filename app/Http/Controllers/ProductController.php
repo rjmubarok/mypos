@@ -9,6 +9,7 @@ use App\Models\Brand;
 use App\Models\Supplier;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use PhpParser\Node\Stmt\TryCatch;
 
 class ProductController extends Controller
 {
@@ -38,7 +39,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        try {
+            $request->validate([
             'name'          => 'required|string|max:255',
             'category_id'   => 'required|exists:categories,id',
             'brand_id'      => 'required|exists:brands,id',
@@ -68,7 +70,10 @@ class ProductController extends Controller
         Product::create($data);
 
         return redirect()->route('product.index')->with('success', 'Product created successfully.');
+    } catch (\Throwable $th) {
+            return back()->with('error', 'Something went wrong!');
     }
+}
 
     /**
      * Display the specified resource.

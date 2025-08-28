@@ -25,7 +25,7 @@
                                 <div class="col-md-4 mb-3">
                                     <label for="category_id" class="form-label">Category <span
                                             class="text-danger">*</span></label>
-                                    <select name="category_id" id="category_id" class="form-select" required>
+                                    <select name="category_id" id="category_id" class="form-select select2" required>
                                         <option value="">-- Select Category --</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}"
@@ -42,7 +42,7 @@
                                 <!-- Brand -->
                                 <div class="col-md-4 mb-3">
                                     <label for="brand_id" class="form-label">Brand</label>
-                                    <select name="brand_id" id="brand_id" class="form-select">
+                                    <select name="brand_id" id="brand_id" class="form-select select2">
                                         <option value="">-- Select Brand --</option>
                                         @foreach ($brands as $brand)
                                             <option value="{{ $brand->id }}"
@@ -56,7 +56,7 @@
                                 <!-- Supplier -->
                                 <div class="col-md-4 mb-3">
                                     <label for="supplier_id" class="form-label">Supplier</label>
-                                    <select name="supplier_id" id="supplier_id" class="form-select">
+                                    <select name="supplier_id" id="supplier_id" class="form-select select2">
                                         <option value="">-- Select Supplier --</option>
                                         @foreach ($suppliers as $supplier)
                                             <option value="{{ $supplier->id }}"
@@ -79,18 +79,22 @@
                                 <div class="col-md-3 mb-3">
                                     <label for="purchase_price" class="form-label">Purchase Price <span
                                             class="text-danger">*</span></label>
-                                    <input type="number"  name="purchase_price" id="purchase_price"
-                                        class="form-control" value="{{ old('purchase_price', '0.00') }}">
+                                    <input type="number" name="purchase_price" id="purchase_price" class="form-control"
+                                        value="{{ old('purchase_price') }}">
                                 </div>
-
+                                @error('purchase_price')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                                 <!-- Selling Price -->
                                 <div class="col-md-3 mb-3">
                                     <label for="selling_price" class="form-label">Selling Price <span
                                             class="text-danger">*</span></label>
-                                    <input type="number"  name="selling_price" id="selling_price"
-                                        class="form-control" value="{{ old('selling_price', '0.00') }}">
+                                    <input type="number" name="selling_price" id="selling_price" class="form-control"
+                                        value="{{ old('selling_price') }}">
                                 </div>
-
+                                @error('selling_price')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                                 <!-- Stock -->
                                 <div class="col-md-2 mb-3">
                                     <label for="stock" class="form-label">Stock <span
@@ -98,14 +102,18 @@
                                     <input type="number" name="stock" id="stock" class="form-control"
                                         value="{{ old('stock', '0') }}">
                                 </div>
-
+                                @error('stock')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                                 <!-- SKU -->
                                 <div class="col-md-4 mb-3">
                                     <label for="sku" class="form-label">SKU</label>
                                     <input type="text" name="sku" id="sku" class="form-control"
-                                        value="{{ old('sku') }}">
+                                        value="{{ old('sku', '12') }}">
                                 </div>
-
+                                @error('sku')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                                 <!-- Image -->
                                 <div class="col-md-4 mb-3">
                                     <label for="image" class="form-label">Product Image</label>
@@ -115,7 +123,9 @@
                                     <img id="photo_preview-image" src="" alt="preview image"
                                         style="max-height: 100px; max-width: 100px;">
                                 </div>
-
+                                @error('image')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                                 <!-- Description -->
                                 <div class="col-md-12 mb-3">
                                     <label for="description" class="form-label">Description</label>
@@ -126,7 +136,7 @@
                                 <div class="col-md-3 mb-3">
                                     <label for="alert_quantity" class="form-label">Alert Quantity</label>
                                     <input type="number" name="alert_quantity" id="alert_quantity" class="form-control"
-                                        value="{{ old('alert_quantity', '5') }}">
+                                        value="{{ old('alert_quantity', '2') }}">
                                 </div>
 
                                 <!-- Status -->

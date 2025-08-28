@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id(); // Primary key
             $table->string('name'); // Category name
             $table->string('slug')->unique(); // URL-friendly name
-            $table->foreignId('parent_id')->nullable()->constrained('categories')->onDelete('cascade'); // For subcategories
             $table->text('description')->nullable(); // Optional description
             $table->string('image')->nullable(); // Optional category image
             $table->boolean('status')->default(true); // Status: active/inactive
