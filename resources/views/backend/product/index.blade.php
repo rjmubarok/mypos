@@ -14,7 +14,7 @@
                                      <a href="{{ route('multiproduct.add') }}" class="btn btn-info btn-sm"><i
                                     class="bi bi-list-task"></i>
                                Multiple Product Add</a>
-                                     <a href="{{ route('multiproduct.add') }}" class="btn btn-info btn-sm"><i
+                                     <a href="{{ route('products.pdf') }}" class="btn btn-info btn-sm"><i
                                     class="bi bi-list-task"></i>
                                PDF</a>
 

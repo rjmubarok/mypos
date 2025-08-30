@@ -52,6 +52,8 @@ Route::post('/brands/status-update', [BrandController::class, 'statusUpdate'])->
 Route::resource('supplier', SupplierController::class);
 Route::post('/supplier/status-update', [SupplierController::class, 'statusUpdate'])->name('supplier.status.update');
 Route::resource('product', ProductController::class);
+Route::get('products/pdf', [ProductController::class, 'generateProductPDF'])->name('products.pdf');
+
 Route::post('/product/status-update', [ProductController::class, 'statusUpdate'])->name('product.status.update');
 Route::get('multiple/product/add', [ProductController::class, 'MultiProductAdd'])->name('multiproduct.add');
 Route::post('multiple/product/store', [ProductController::class, 'storeMultiple'])->name('product.storeMultiple');
