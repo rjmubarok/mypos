@@ -20,18 +20,7 @@
                                     <input type="text" class="form-control" value="{{ $category->name }}" id="name"
                                         name="name" required>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="parent_id" class="form-label">Parent Category</label>
-                                    <select name="parent_id" id=""
-                                        class="form-control @error('parent_id') is-invalid @enderror">
-                                        <option value="" selected>@lang('student.session_name')</option>
-                                        @foreach ($categories as $session)
-                                            <option @if ($category->parent_id == $session->id) selected @endif
-                                                {{ old('parent_id') == $session->id ? 'selected' : '' }}
-                                                value="{{ $session->id }}">{{ $session->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                      
 
                                 <div class="col-md-3 d-flex align-items-center">
 

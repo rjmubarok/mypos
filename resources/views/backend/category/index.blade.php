@@ -18,8 +18,8 @@
                         <table id="myTable" class=" display table datatable table-bordered  table-hover">
                             <thead>
                                 <tr>
+                                    <th>Sr</th>
                                     <th>Name</th>
-                                    <th>Parent Category</th>
                                     <th>Description</th>
                                     <th>Image</th>
                                     <th>Status</th>
@@ -30,8 +30,9 @@
                             <tbody>
                                 @foreach ($categories as $category)
                                     <tr>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $category->name }}</td>
-                                        <td>{{ $category->parent ? $category->parent->name : 'N/A' }}</td>
+
                                         <td>{{ $category->description }}</td>
                                         <td><img src="{{ $category->image }}" alt="" width="50"></td>
                                         <td>
@@ -73,67 +74,55 @@
                     <!-- Category Modal -->
                     <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel"
                         aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
+                        <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <form id="categoryForm" enctype="multipart/form-data">
                                     @csrf
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="categoryModalLabel">Add Category</h5>
+                                        <h5 class="modal-title" id="categoryModalLabel">Add Categories</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
+
                                     <div class="modal-body">
-
-                                        <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <label for="name" class="form-label">Category Name</label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    required>
-                                            </div>
-
-
-
-                                            <div class="col-md-6">
-                                                <label for="parent_id" class="form-label">Parent Category</label>
-                                                <select class="form-select" name="parent_id" id="parent_id">
-                                                    <option value="">-- None --</option>
-                                                    @foreach ($categories as $category)
-                                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-3 d-flex align-items-center">
-
-                                                <div class="form-check ">
-                                                    <input class="form-check-input" type="checkbox" name="status"
-                                                        id="status" value="1" checked>
-                                                    <label class="form-check-label" for="status">Active</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12 col-md-9">
-                                                <label for="description" class="form-label">Description</label>
-                                                <textarea class="form-control" name="description" id="description" rows="3"></textarea>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <label for="image" class="form-label">Category Image</label>
-                                                <input type="file" class="form-control" id="image" name="image">
-                                            </div>
-                                            <div class="col-md-6">
-
-                                                <div class="mt-2">
-                                                    <img id="imagePreview" src="#" alt="Preview"
-                                                        class="img-thumbnail" style="display:none; max-height:150px;">
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                        <table class="table table-bordered" id="categoryTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Category Name</th>
+                                                    <th>Description</th>
+                                                    <th>Status</th>
+                                                    <th>Image</th>
+                                                    <th>Preview</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="categoryRows">
+                                                <tr>
+                                                    <td><input type="text" name="categories[0][name]"
+                                                            class="form-control" required></td>
+                                                    <td>
+                                                        <textarea name="categories[0][description]" class="form-control"></textarea>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <input type="checkbox" name="categories[0][status]" value="1"
+                                                            checked>
+                                                    </td>
+                                                    <td><input type="file" name="categories[0][image]"
+                                                            class="form-control image-input"></td>
+                                                    <td><img src="#" class="img-thumbnail preview"
+                                                            style="display:none; max-height:80px;"></td>
+                                                    <td><button type="button"
+                                                            class="btn btn-danger btn-sm removeRow">X</button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button type="button" class="btn btn-success btn-sm" id="addRow">+ Add
+                                            More</button>
                                     </div>
+
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save Category</button>
+                                        <button type="submit" class="btn btn-primary">Save Categories</button>
                                     </div>
                                 </form>
                             </div>
@@ -167,45 +156,73 @@
         });
     </script>
     <script>
-        $("#categoryForm").on("submit", function(e) {
-            e.preventDefault();
+        let rowIndex = 1;
 
-            let formData = new FormData(this);
+        $(document).ready(function() {
 
-            $.ajax({
-                url: "{{ route('category.store') }}", // or update
-                type: "POST",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(res) {
-                    if (res.status) {
+            // Add new row
+            $('#addRow').click(function() {
+                let newRow = `
+        <tr>
+            <td><input type="text" name="categories[${rowIndex}][name]" class="form-control" required></td>
+            <td><textarea name="categories[${rowIndex}][description]" class="form-control"></textarea></td>
+            <td class="text-center">
+                <input type="checkbox" name="categories[${rowIndex}][status]" value="1" checked>
+            </td>
+            <td><input type="file" name="categories[${rowIndex}][image]" class="form-control image-input"></td>
+            <td><img src="#" class="img-thumbnail preview" style="display:none; max-height:80px;"></td>
+            <td><button type="button" class="btn btn-danger btn-sm removeRow">X</button></td>
+        </tr>`;
+                $('#categoryRows').append(newRow);
+                rowIndex++;
+            });
+
+            // Remove row
+            $(document).on('click', '.removeRow', function() {
+                $(this).closest('tr').remove();
+            });
+
+            // Preview image
+            $(document).on('change', '.image-input', function() {
+                let input = this;
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    $(input).closest('tr').find('.preview').attr('src', e.target.result).show();
+                };
+                if (input.files[0]) {
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+
+            // AJAX Submit
+            $('#categoryForm').on('submit', function(e) {
+                e.preventDefault();
+                let formData = new FormData(this);
+
+                $.ajax({
+                    url: "{{ route('category.store') }}", // custom route
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#categoryModal').modal('hide');
+                        $('#categoryForm')[0].reset();
+                        $('#categoryRows').html(""); // clear table
+                        rowIndex = 1;
                         Swal.fire({
                             icon: "success",
                             title: "Success",
-                            text: res.message,
+                            text: response.message,
                         });
-                        $("#categoryForm")[0].reset();
-                        $("#categoryModal").modal('hide');
-                        $(".text-danger").remove(); // clear old errors
                         location.reload();
+                        // reload table dynamically if needed
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                        alert("Something went wrong!");
                     }
-                },
-                error: function(xhr) {
-                    // remove old errors
-                    $(".text-danger").remove();
-
-                    if (xhr.status === 422) { // Laravel validation error
-                        let errors = xhr.responseJSON.errors;
-                        $.each(errors, function(key, value) {
-                            // find input with matching name
-                            let input = $(`[name="${key}"]`);
-
-                            // show error message
-                            input.after(`<span class="text-danger">${value[0]}</span>`);
-                        });
-                    }
-                }
+                });
             });
         });
     </script>
@@ -244,28 +261,28 @@
             });
         });
     </script>
-  <script>
-$(document).on('change', '.status-toggle', function() {
-    let id = $(this).data('id');
-    let status = $(this).is(':checked') ? 1 : 0;
-    let label = $(this).closest('.form-check').find('.form-check-label');
+    <script>
+        $(document).on('change', '.status-toggle', function() {
+            let id = $(this).data('id');
+            let status = $(this).is(':checked') ? 1 : 0;
+            let label = $(this).closest('.form-check').find('.form-check-label');
 
-    $.ajax({
-        url: "{{ route('category.status.update') }}",
-        type: "POST",
-        data: {
-            _token: "{{ csrf_token() }}",
-            id: id,
-            status: status
-        },
-        success: function(res) {
-            if(res.success){
-                label.text(res.status == 1 ? 'Active' : 'Inactive');
-                label.removeClass('text-success text-danger')
-                     .addClass(res.status == 1 ? 'text-success' : 'text-danger');
-            }
-        }
-    });
-});
-</script>
+            $.ajax({
+                url: "{{ route('category.status.update') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id,
+                    status: status
+                },
+                success: function(res) {
+                    if (res.success) {
+                        label.text(res.status == 1 ? 'Active' : 'Inactive');
+                        label.removeClass('text-success text-danger')
+                            .addClass(res.status == 1 ? 'text-success' : 'text-danger');
+                    }
+                }
+            });
+        });
+    </script>
 @endsection

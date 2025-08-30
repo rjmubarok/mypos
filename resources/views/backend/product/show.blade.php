@@ -29,9 +29,9 @@
                         </div>
                     @endif
 
-                    {{-- SKU --}}
-                    <div class="small text-muted mb-1">SKU</div>
-                    <div class="fw-semibold mb-3">{{ $product->sku ?? '—' }}</div>
+                    {{-- Stock --}}
+                    <div class="small text-muted mb-1">Stock</div>
+                    <div class="fw-semibold mb-3">{{ $product->stock ?? '—' }}</div>
 
                     {{-- Barcode (Milon/Barcode প্যাকেজ থাকলে) --}}
                     @if(!empty($product->barcode))

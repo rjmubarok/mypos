@@ -53,6 +53,9 @@ Route::resource('supplier', SupplierController::class);
 Route::post('/supplier/status-update', [SupplierController::class, 'statusUpdate'])->name('supplier.status.update');
 Route::resource('product', ProductController::class);
 Route::post('/product/status-update', [ProductController::class, 'statusUpdate'])->name('product.status.update');
+Route::get('multiple/product/add', [ProductController::class, 'MultiProductAdd'])->name('multiproduct.add');
+Route::post('multiple/product/store', [ProductController::class, 'storeMultiple'])->name('product.storeMultiple');
+Route::POST('/cat_product', [SaleController::class, 'fetchProductBycat'])->name('fetch_product_by_category');
 Route::resource('sale', SaleController::class);
 Route::resource('customer', CustomerController::class);
 

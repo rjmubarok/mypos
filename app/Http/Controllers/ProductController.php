@@ -18,20 +18,64 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('backend.product.index', [
-            'products' => Product::with(['category', 'brand', 'supplier'])->get()
-        ]);
+       return view('backend.product.index', [
+    'products' => Product::with(['category', 'brand', 'supplier'])
+                        ->orderBy('id', 'desc')
+                        ->get()
+]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function storeMultiple(Request $request)
+{
+    $request->validate([
+        'products.*.name'           => 'required|string|max:255',
+        'products.*.purchase_price' => 'required|numeric|min:0',
+        'products.*.selling_price'  => 'required|numeric|min:0',
+        'products.*.stock'          => 'required|integer|min:0',
+    ]);
+
+    foreach ($request->products as $index => $productData) {
+    $product = new Product();
+    $product->category_id    = $productData['category_id'] ?? null;
+    $product->brand_id       = $productData['brand_id'] ?? null;
+    $product->supplier_id    = $productData['supplier_id'] ?? null;
+    $product->name           = $productData['name'];
+    $product->slug           = Str::slug($productData['name']).'-'.time();
+    $product->purchase_price = $productData['purchase_price'];
+    $product->selling_price  = $productData['selling_price'];
+    $product->stock          = $productData['stock'];
+    $product->sku            = $productData['sku'] ?? null;
+    $product->description    = $productData['description'] ?? null;
+    $product->alert_quantity = $productData['alert_quantity'] ?? 2;
+    $product->status         = $productData['status'] ?? 1;
+    $product->barcode        = 'PROD-' . time();
+
+    // Handle Image
+    if ($request->hasFile("products.$index.image")) {
+        $file = $request->file("products.$index.image");
+        $filename = time().'_'.$file->getClientOriginalName();
+        $file->move('uploads/image/', $filename);
+        $product->image = $filename;
+    }
+
+    $product->save();
+}
+
+    return redirect()->route('product.index')->with('success', 'Products added successfully!');
+}    public function create()
     {
          $categories = Category::all();
         $brands     = Brand::all();
         $suppliers  = Supplier::all();
         return view('backend.product.create', compact('categories', 'brands', 'suppliers'));
+    }
+    public function MultiProductAdd()
+    {
+        //return 'hrllo';
+         $categories = Category::all();
+        $brands     = Brand::all();
+        $suppliers  = Supplier::all();
+        return view('backend.product.multi_product_add', compact('categories', 'brands', 'suppliers'));
     }
 
     /**
@@ -39,6 +83,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+      //  return $request->all();
         try {
             $request->validate([
             'name'          => 'required|string|max:255',
@@ -57,7 +102,8 @@ class ProductController extends Controller
         ]);
 
         $data = $request->all();
-        $data['slug'] = Str::slug($request->name);
+        $data['slug'] = Str::slug($request->name) . '-' . time();
+        $data['barcode'] = 'PROD-' . time();
 
          if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -68,10 +114,11 @@ class ProductController extends Controller
         }
         $data['barcode'] = 'PROD-' . time();
         Product::create($data);
-
-        return redirect()->route('product.index')->with('success', 'Product created successfully.');
+  toast('Product Added successfully', 'success');
+        return redirect()->back();
     } catch (\Throwable $th) {
-            return back()->with('error', 'Something went wrong!');
+        toast('Something went wrong!', 'error');
+            return back();
     }
 }
 

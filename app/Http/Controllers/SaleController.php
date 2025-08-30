@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
+use App\Models\Product;
 use App\Models\Saleitem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,11 @@ class SaleController extends Controller
 
 
 
-
+  public function fetchProductBycat(Request $request)
+    {
+        $product = Product::where('category_id', $request->category_id)->get();
+        return response()->json($product);
+    }
 
 
 
@@ -34,7 +39,8 @@ class SaleController extends Controller
     {
         $customers = \App\Models\Customer::all();
         $products  = \App\Models\Product::all();
-        return view('backend.sales.create', compact('customers', 'products'));
+        $categories  = \App\Models\Category::all();
+        return view('backend.sales.create', compact('customers', 'products','categories'));
     }
 
 public function store(Request $request)
@@ -101,16 +107,72 @@ toast('success', 'Sale Created Successfully!');
      */
     public function edit(Sale $sale)
     {
-        //
+        $customers = \App\Models\Customer::all();
+        $products  = \App\Models\Product::all();
+        $categories  = \App\Models\Category::all();
+        return view('backend.sales.edit', compact('sale', 'customers', 'products', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Sale $sale)
-    {
-        //
+  public function update(Request $request, $id)
+{
+    $request->validate([
+
+        'sold_at'       => 'required|date',
+        'payment_method'=> 'required|string',
+        'items'         => 'required|array|min:1',
+        'items.*.product_id' => 'required|exists:products,id',
+        'items.*.quantity'   => 'required|numeric|min:1',
+        'items.*.unit_price' => 'required|numeric|min:0',
+        'subtotal'      => 'required|numeric|min:0',
+        'grand_total'   => 'required|numeric|min:0',
+        'discount'      => 'nullable|numeric|min:0',
+        'tax'           => 'nullable|numeric|min:0',
+        'shipping'      => 'nullable|numeric|min:0',
+        'paid_amount'   => 'nullable|numeric|min:0',
+    ]);
+
+    $sale = Sale::findOrFail($id);
+
+    // Update sale main info
+
+    $sale->sold_at       = $request->sold_at;
+    $sale->payment_method= $request->payment_method;
+    $sale->subtotal      = $request->subtotal;
+    $sale->discount      = $request->discount ?? 0;
+    $sale->tax           = $request->tax ?? 0;
+    $sale->shipping      = $request->shipping ?? 0;
+    $sale->grand_total   = $request->grand_total;
+    $sale->paid_amount          = $request->has('paid') ? 1 : 0;
+    $sale->paid_amount   = $request->paid ? ($request->paid_amount ?? $sale->grand_total) : 0;
+
+    // $sale->due_amount    = $sale->grand_total - $sale->paid_amount;
+    $sale->save();
+
+    // Delete old items
+    $sale->items()->delete();
+
+    // Insert new items
+    foreach ($request->items as $item) {
+$product = Product::findOrFail($item['product_id']);
+        $sale->items()->create([
+            'product_id' => $item['product_id'],
+            'quantity'   => $item['quantity'],
+            'unit_price' => $item['unit_price'],
+ 'product_name' => $product->name,
+            'total'      => $item['total'],
+        ]);
+
+        // Optional: stock update (if your system has stock management)
+        Product::where('id', $item['product_id'])
+            ->decrement('stock', $item['quantity']);
     }
+toast( 'Sale Update and stock updated successfully!','success');
+    return redirect()->route('sale.index');
+}
+
 
     /**
      * Remove the specified resource from storage.
@@ -132,7 +194,7 @@ toast('success', 'Sale Created Successfully!');
         $sale->delete();
 toast('success', 'Sale deleted and stock updated successfully!');
         return redirect()->route('sale.index');
-       
+
     } catch (\Exception $e) {
         return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
     }

@@ -11,6 +11,12 @@
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('product.create') }}" class="btn btn-info btn-sm"><i
                                     class="bi bi-plus-circle"></i> Add New Product</a>
+                                     <a href="{{ route('multiproduct.add') }}" class="btn btn-info btn-sm"><i
+                                    class="bi bi-list-task"></i>
+                               Multiple Product Add</a>
+                                     <a href="{{ route('multiproduct.add') }}" class="btn btn-info btn-sm"><i
+                                    class="bi bi-list-task"></i>
+                               PDF</a>
 
                         </div>
 
@@ -18,19 +24,21 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="productTable" class="table table-bordered table-striped align-middle">
-                                <thead class="table-dark">
+                                <thead >
                                     <tr>
                                         <th>#</th>
                                         <th>Image</th>
-                                        <th>Category</th>
-                                        <th>Brand</th>
-                                        <th>Supplier</th>
+
+                                        {{--  <th>Brand</th>
+                                        <th>Supplier</th>  --}}
                                         <th>Product Name</th>
-                                        <th>SKU</th>
+                                        {{--  <th>SKU</th>  --}}
+
                                         <th>Barcode</th>
                                         <th>Purchase Price</th>
                                         <th>Selling Price</th>
                                         <th>Stock</th>
+                                         <th>Category</th>
                                         <th>Alert Qty</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -51,13 +59,13 @@
                                             </td>
 
                                             <!-- Relations -->
-                                            <td>{{ $product->category->name ?? '—' }}</td>
-                                            <td>{{ $product->brand->name ?? '—' }}</td>
-                                            <td>{{ $product->supplier->name ?? '—' }}</td>
+
+                                            {{--  <td>{{ $product->brand->name ?? '—' }}</td>
+                                            <td>{{ $product->supplier->name ?? '—' }}</td>  --}}
 
                                             <!-- Product Info -->
                                             <td>{{ $product->name ?? '—' }}</td>
-                                            <td>{{ $product->sku ?? '—' }}</td>
+                                            {{--  <td>{{ $product->sku ?? '—' }}</td>  --}}
 
                                             <!-- Barcode (safe) -->
                                             <td>
@@ -84,6 +92,7 @@
                                                     {{ $alert }}
                                                 @endif
                                             </td>
+                                             <td>{{ $product->category->name ?? '—' }}</td>
 
                                             <!-- Status -->
                                             <td>

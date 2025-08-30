@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Sales Add')
+
 @section('styles')
 <style>
     .select2-container .select2-selection--single {
@@ -15,11 +16,21 @@
 @section('content')
 <div class="container">
     <h3>Create Sale</h3>
-    <form action="{{ route('sale.store') }}" method="POST">
+    <form action="{{ route('sale.store') }}" method="POST" id="saleForm">
         @csrf
 
         <!-- Customer & Payment Info -->
         <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="category_id">Category <span class="text-danger">*</span></label>
+                <select class="form-control select2" id="category_id" name="category_id" required>
+                    <option selected disabled>-- Select Category --</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class="col-md-4">
                 <label>Customer</label>
                 <select name="customer_id" class="form-control">
@@ -29,12 +40,14 @@
                     @endforeach
                 </select>
             </div>
+
             <div class="col-md-4">
                 <label>Sold At</label>
                 <input type="datetime-local" name="sold_at" class="form-control"
                        value="{{ now()->format('Y-m-d\TH:i') }}">
             </div>
-            <div class="col-md-4">
+
+            <div class="col-md-4 mt-2">
                 <label>Payment Method</label>
                 <select name="payment_method" class="form-control">
                     <option value="cash">Cash</option>
@@ -60,7 +73,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <select name="items[0][product_id]" class="form-control product-select">
+                        <select name="items[0][product_id]" class="form-control product-select" required>
                             <option value="">-- select --</option>
                             @foreach ($products as $p)
                                 <option value="{{ $p->id }}" data-price="{{ $p->selling_price }}">
@@ -70,7 +83,7 @@
                         </select>
                     </td>
                     <td>
-                        <input type="number" name="items[0][quantity]" value="1" class="form-control qty">
+                        <input type="number" name="items[0][quantity]" value="1" class="form-control qty" min="1">
                     </td>
                     <td>
                         <input type="number" name="items[0][unit_price]" class="form-control unit-price" readonly>
@@ -117,7 +130,7 @@
 
             <div class="col-md-3 mt-2" id="paidAmountBox" style="display:none;">
                 <label>Paid Amount</label>
-                <input type="number" step="0.01" id="paid_amount" name="paid_amount" class="form-control" value="0" readonly>
+                <input type="number" step="0.01" id="paid_amount" name="paid_amount" class="form-control" value="0">
             </div>
 
             <div class="col-md-3 mt-2">
@@ -157,32 +170,30 @@
         updatePaidAndDue();
     }
 
-    // Update Paid and Due
     function updatePaidAndDue() {
-        let grand = parseFloat($('#grand_total').val()) || 0;
+    let grand = parseFloat($('#grand_total').val()) || 0;
 
-        if ($('#paid').is(':checked')) {
-            $('#paidAmountBox').show();
-            $('#paid_amount').val(grand.toFixed(2)); // Paid = Grand Total
-            $('#due_amount').val(0);
-        } else {
-            $('#paidAmountBox').hide();
-            $('#paid_amount').val(0);
-            $('#due_amount').val(grand.toFixed(2)); // Due = Grand Total
-        }
+    if ($('#paid').is(':checked')) {
+        $('#paidAmountBox').show();
+        $('#paid_amount').val(grand.toFixed(2)); // Paid = Grand Total
+        $('#due_amount').val('0.00');            // Due = 0
+    } else {
+        $('#paidAmountBox').hide();
+        $('#paid_amount').val(0);
+        $('#due_amount').val(grand.toFixed(2));
     }
+}
 
     // product select change
     $(document).on('change', '.product-select', function() {
         let price = parseFloat($(this).find(':selected').data('price')) || 0;
         let tr = $(this).closest('tr');
-
         tr.find('.unit-price').val(price);
         recalc();
     });
 
-    // qty/discount/tax/shipping change
-    $(document).on('input', '.qty, #discount, #tax, #shipping', recalc);
+    // qty/discount/tax/shipping/paid_amount change
+    $(document).on('input', '.qty, #discount, #tax, #shipping, #paid_amount', recalc);
 
     // add new row
     $('#add-row').click(function() {
@@ -215,6 +226,37 @@
     // Paid checkbox change
     $('#paid').change(function () {
         updatePaidAndDue();
+    });
+
+    // Validate at least one product
+    $('#saleForm').submit(function (e) {
+        if ($('.product-select').filter(function() { return $(this).val(); }).length === 0) {
+            e.preventDefault();
+            alert("Please select at least one product.");
+        }
+    });
+
+    // Category change → fetch products
+    $('#category_id').on('change', function () {
+        var cat_id = this.value;
+
+        $.ajax({
+            url: "{{ route('fetch_product_by_category') }}",
+            type: "POST",
+            data: {
+                category_id: cat_id,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function (result) {
+                $('.product-select').each(function () {
+                    let select = $(this);
+                    select.html('<option value="">Select Product</option>');
+                    $.each(result, function (key, value) {
+                        select.append('<option value="' + value.id + '" data-price="' + value.selling_price + '">' + value.name + '</option>');
+                    });
+                });
+            }
+        });
     });
 
     // init

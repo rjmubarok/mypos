@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Supplier Edit')
+@section('title', 'Product Edit')
 @section('content')
     <section class="section">
         <div class="row">
@@ -10,10 +10,10 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('supplier.create') }}" class="btn btn-info btn-sm"><i
+                            <a href="{{ route('product.create') }}" class="btn btn-info btn-sm"><i
                                     class="bi bi-plus-circle"></i>
                                 Create</a>
-                            <a href="{{ route('supplier.index') }}" class="btn btn-info btn-sm"><i
+                            <a href="{{ route('product.index') }}" class="btn btn-info btn-sm"><i
                                     class="bi bi-list-task"></i>
                                 List</a>
                         </div>
@@ -120,9 +120,9 @@
                                     <input type="file" name="image" id="image" class="form-control">
                                 </div>
                                 <div class="col-md-2 mb-3">
-                                    <img id="photo_preview-image" src="{{ $product->image ?? '' }}" alt="preview image"
+                                   <img id="photo_preview-image" src="{{ asset($product->image) }}" alt="preview image"
                                         style="max-height: 100px; max-width: 100px;">
-                                    <img src="{{ $product->image }}" style="max-height: 100px; max-width: 100px;">
+                                    
                                 </div>
 
                                 <!-- Description -->

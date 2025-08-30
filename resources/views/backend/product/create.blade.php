@@ -14,6 +14,9 @@
                             <a href="{{ route('product.index') }}" class="btn btn-info btn-sm"><i
                                     class="bi bi-list-task"></i>
                                 Product List</a>
+                            <a href="{{ route('multiproduct.add') }}" class="btn btn-info btn-sm"><i
+                                    class="bi bi-list-task"></i>
+                                Product List</a>
                         </div>
 
                     </div>
@@ -100,7 +103,7 @@
                                     <label for="stock" class="form-label">Stock <span
                                             class="text-danger">*</span></label>
                                     <input type="number" name="stock" id="stock" class="form-control"
-                                        value="{{ old('stock', '0') }}">
+                                        value="{{ old('stock') }}">
                                 </div>
                                 @error('stock')
                                     <span class="text-danger">{{ $message }}</span>
@@ -145,6 +148,7 @@
                                     <div class="form-check">
                                         <input type="radio" name="status" id="statusActive" value="1"
                                             class="form-check-input" {{ old('status', 1) == 1 ? 'checked' : '' }}>
+                                        <!-- default = 1 -->
                                         <label for="statusActive" class="form-check-label">Active</label>
                                     </div>
                                     <div class="form-check">
