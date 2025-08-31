@@ -5,14 +5,15 @@
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
-                
-                 <div class="d-flex justify-content-between">
-                 <h4 class="mb-4">Sales List</h4>
-                            <a href="{{ route('sale.create') }}" class="btn btn-info btn-sm"><i
-                                    class="bi bi-plus-circle"></i> Add New Sales</a>
 
-                        </div>
-                <div class="card shadow-sm">
+                
+                <div class="card">
+                <div class="d-flex justify-content-between">
+                    <h4 class="">Sales List</h4>
+                    <a href="{{ route('sale.create') }}" class="btn btn-info btn-sm btn-rounded"><i
+                            class="bi bi-plus-circle"></i> Add New Sales</a>
+
+                </div>
                     <div class="card-body table-responsive">
                         <table class="table table-bordered table-hover align-middle">
                             <thead class="table-dark">
@@ -60,17 +61,18 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('sale.show', $sale->id) }}"
-                                                class="btn btn-sm btn-info">View</a>
-                                            <a href="{{ route('sale.edit', $sale->id) }}"
-                                                class="btn btn-sm btn-warning">Edit</a>
+                                            <a href="{{ route('sale.show', $sale->id) }}" class="btn btn-sm btn-info"><i
+                                                    class="bi bi-eye"></i></a>
+                                            <a href="{{ route('sale.edit', $sale->id) }}" class="btn btn-sm btn-warning"><i
+                                                    class="bi bi-pencil-square"></i></a>
+                                            <a href="{{ route('sale.invoice', $sale->id) }}" class="btn btn-sm btn-dark"><i
+                                                    class="bi bi-file-pdf"></i></a>
                                             <form action="{{ route('sale.destroy', $sale->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button onclick="return confirm('Are you sure?')"
-                                                    class="btn btn-sm btn-danger">
-                                                    Delete
+                                                <button onclick="return confirm('Are you sure?')" class="btn btn-sm btn-danger">
+                                                    <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
                                         </td>
@@ -84,9 +86,9 @@
                         </table>
 
                         {{-- pagination --}}
-                        {{--  <div class="mt-3">
-                {{ $sales->links() }}
-            </div>  --}}
+                        {{-- <div class="mt-3">
+                            {{ $sales->links() }}
+                        </div> --}}
                     </div>
 
 
@@ -99,7 +101,7 @@
 
     <script>
         // Delete Brand
-        $(document).on('click', '.deleteBtn', function() {
+        $(document).on('click', '.deleteBtn', function () {
             let id = $(this).data('id');
             let url = $(this).data("url");
             Swal.fire({
@@ -119,12 +121,12 @@
                             _token: "{{ csrf_token() }}",
                             _method: "DELETE"
                         },
-                        success: function(res) {
+                        success: function (res) {
                             Swal.fire("Deleted!", res.message, "success");
                             // Optionally remove row from table
                             location.reload();
                         },
-                        error: function(xhr) {
+                        error: function (xhr) {
                             Swal.fire("Error!", "Something went wrong.", "error");
                         }
                     });
@@ -132,7 +134,7 @@
             });
 
         });
-        $(document).on('change', '.status-toggle', function() {
+        $(document).on('change', '.status-toggle', function () {
             let id = $(this).data('id');
             let status = $(this).is(':checked') ? 1 : 0;
             let label = $(this).closest('.form-check').find('.form-check-label');
@@ -141,7 +143,7 @@
                 _token: '{{ csrf_token() }}',
                 id: id,
                 status: status
-            }, function(res) {
+            }, function (res) {
                 label.text(status == 1 ? 'Active' : 'Inactive')
                     .removeClass('text-success text-danger')
                     .addClass(status == 1 ? 'text-success' : 'text-danger');
@@ -149,7 +151,7 @@
         });
     </script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#productTable').DataTable();
         });
     </script>

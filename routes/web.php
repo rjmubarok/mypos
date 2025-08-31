@@ -59,6 +59,7 @@ Route::get('multiple/product/add', [ProductController::class, 'MultiProductAdd']
 Route::post('multiple/product/store', [ProductController::class, 'storeMultiple'])->name('product.storeMultiple');
 Route::POST('/cat_product', [SaleController::class, 'fetchProductBycat'])->name('fetch_product_by_category');
 Route::resource('sale', SaleController::class);
+Route::get('sale-invoice/{id}', [SaleController::class, 'downloadInvoice'])->name('sale.invoice');
 Route::resource('customer', CustomerController::class);
 
 });
