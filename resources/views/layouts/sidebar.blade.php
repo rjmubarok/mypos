@@ -89,6 +89,12 @@
                 <span>Customer</span>
             </a>
         </li>
+        <li class="nav-item  {{ request()->routeIs('institute') ? 'active' : '' }} ">
+            <a class="nav-link" href="{{ route('institute') }}">
+                <i class="bi bi-house"></i>
+                <span>Institute</span>
+            </a>
+        </li>
 
   <li class="nav-item ">
             <a class="nav-link collapsed" data-bs-target="#sidebar-user" data-bs-toggle="collapse" href="#">
