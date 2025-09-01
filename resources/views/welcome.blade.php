@@ -45,13 +45,13 @@
                     <div class="row justify-content-center">
 
                         <div class="col-lg-6 col-md-6 d-flex flex-column align-items-center justify-content-center">
-                            {{--  <img class="responsive" width="300" height="300"  src="{{ \App\Models\Institute::value('banner') }}" alt="">  --}}
+                            <img class="responsive" width="300" height="300"  src="{{ \App\Models\Institute::value('banner') }}" alt="">
                         </div>
                         <div class="col-lg-6 col-md-6 d-flex flex-column align-items-center justify-content-center">
                             <div class="d-flex justify-content-center py-4">
                                 <a href="#" class="logo d-flex align-items-center w-auto">
-                                    {{--  <img  src="{{ \App\Models\Institute::value('banner') }}" alt="">  --}}
-                                    <span class="d-none d-lg-block">POS Login</span>
+                                    <img  src="{{ \App\Models\Institute::value('banner') }}" alt="">
+                                    <span class="d-none d-lg-block">{{ \App\Models\Institute::value('name') }} Login</span>
                                 </a>
                             </div><!-- End Logo -->
 

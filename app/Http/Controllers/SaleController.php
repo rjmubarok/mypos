@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sale;
 use App\Models\Product;
-use App\Models\Saleitem;
+use App\Models\SaleItem;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +31,27 @@ class SaleController extends Controller
     }
 
 
+public function dueSales()
+{
+    // Get sales where due_amount is greater than zero
+    $sales = Sale::with(['customer', 'items.product']) // eager load customer and products
+                 ->where('due_amount', '>', 0)
+                 ->get();
 
+    return view('backend.sales.due', compact('sales'));
+}
+public function updateDue(Request $request, Sale $sale)
+{
+     $request->validate([
+        'due_amount' => 'required|numeric|min:0',
+    ]);
+
+    // Update paid_amount so due_amount is automatically correct
+    $sale->paid_amount = $sale->grand_total - $request->due_amount;
+    $sale->save();
+
+   return response()->json(['message' => 'Due amount updated successfully!']);
+}
 
 
     /**

@@ -6,14 +6,14 @@
         <div class="row">
             <div class="col-lg-12">
 
-                
-                <div class="card">
-                <div class="d-flex justify-content-between">
-                    <h4 class="">Sales List</h4>
-                    <a href="{{ route('sale.create') }}" class="btn btn-info btn-sm btn-rounded"><i
-                            class="bi bi-plus-circle"></i> Add New Sales</a>
 
-                </div>
+                <div class="card">
+                    <div class="d-flex justify-content-between">
+                        <h4 class="">Sales List</h4>
+                        <a href="{{ route('sale.create') }}" class="btn btn-info btn-sm btn-rounded"><i
+                                class="bi bi-plus-circle"></i> Add New Sales</a>
+
+                    </div>
                     <div class="card-body table-responsive">
                         <table class="table table-bordered table-hover align-middle">
                             <thead class="table-dark">
@@ -22,12 +22,13 @@
                                     <th>Invoice No</th>
                                     <th>Customer</th>
                                     <th>Sold At</th>
+                                    <th>Product</th>
                                     <th>Grand Total</th>
                                     <th>Paid</th>
                                     <th>Due</th>
                                     <th>Payment Status</th>
                                     <th>Status</th>
-                                    <th width="160">Actions</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -37,6 +38,13 @@
                                         <td>{{ $sale->invoice_no }}</td>
                                         <td>{{ $sale->customer->name ?? 'Walk-in Customer' }}</td>
                                         <td>{{ \Carbon\Carbon::parse($sale->sold_at)->format('d M Y, h:i A') }}</td>
+                                        <td>
+                                            @foreach ($sale->items as $item)
+                                                {{ $item->product->name ?? 'N/A' }}@if (!$loop->last)
+                                                    ,
+                                                @endif
+                                            @endforeach
+                                        </td>
                                         <td>{{ number_format($sale->grand_total, 2) }}</td>
                                         <td>{{ number_format($sale->paid_amount, 2) }}</td>
                                         <td>{{ number_format($sale->due_amount, 2) }}</td>
@@ -71,37 +79,38 @@
                                                 class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button onclick="return confirm('Are you sure?')" class="btn btn-sm btn-danger">
+                                                <button onclick="return confirm('Are you sure?')"
+                                                    class="btn btn-sm btn-danger">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
                                         </td>
                                     </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="10" class="text-center text-muted">No sales found.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                    @empty
+                                        <tr>
+                                            <td colspan="10" class="text-center text-muted">No sales found.</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
 
-                        {{-- pagination --}}
-                        {{-- <div class="mt-3">
+                            {{-- pagination --}}
+                            {{-- <div class="mt-3">
                             {{ $sales->links() }}
                         </div> --}}
+                        </div>
+
+
                     </div>
-
-
                 </div>
-            </div>
-    </section>
+        </section>
 
-@endsection
+    @endsection
 @section('scripts')
 
     <script>
         // Delete Brand
-        $(document).on('click', '.deleteBtn', function () {
+        $(document).on('click', '.deleteBtn', function() {
             let id = $(this).data('id');
             let url = $(this).data("url");
             Swal.fire({
@@ -121,12 +130,12 @@
                             _token: "{{ csrf_token() }}",
                             _method: "DELETE"
                         },
-                        success: function (res) {
+                        success: function(res) {
                             Swal.fire("Deleted!", res.message, "success");
                             // Optionally remove row from table
                             location.reload();
                         },
-                        error: function (xhr) {
+                        error: function(xhr) {
                             Swal.fire("Error!", "Something went wrong.", "error");
                         }
                     });
@@ -134,7 +143,7 @@
             });
 
         });
-        $(document).on('change', '.status-toggle', function () {
+        $(document).on('change', '.status-toggle', function() {
             let id = $(this).data('id');
             let status = $(this).is(':checked') ? 1 : 0;
             let label = $(this).closest('.form-check').find('.form-check-label');
@@ -143,7 +152,7 @@
                 _token: '{{ csrf_token() }}',
                 id: id,
                 status: status
-            }, function (res) {
+            }, function(res) {
                 label.text(status == 1 ? 'Active' : 'Inactive')
                     .removeClass('text-success text-danger')
                     .addClass(status == 1 ? 'text-success' : 'text-danger');
@@ -151,7 +160,7 @@
         });
     </script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#productTable').DataTable();
         });
     </script>

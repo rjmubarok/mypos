@@ -22,9 +22,10 @@ class AdminDashboardController extends Controller
         $totalproduct = Product::all()->count();
         $totalcategory = Category::all()->count();
         //$todaysals=Sale::whereDate('created_at', Carbon::today())->get()->count();
-        $recent_sales = Sale::orderBy('id', 'DESC')->whereDate('created_at', Carbon::today())->get();
+       $recent_sales = Sale::with(['items.product', 'customer'])->latest()->take(10)->get();;
 
         $todaysals = SaleItem::whereDate('created_at', Carbon::today())->sum('total');
+        //
         // return $recent_sales;
         $lastmonth = SaleItem::query()->whereBetween('created_at', [now(), now()->subMonth()])->sum('total');
         $products = Product::all();

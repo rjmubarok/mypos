@@ -12,7 +12,10 @@ class Sale extends Model
 
      protected $guarded = [];
 
-    public function items()    { return $this->hasMany(SaleItem::class); }
+    public function items()
+{
+    return $this->hasMany(SaleItem::class, 'sale_id');
+}
     public function payments() { return $this->hasMany(SalePayment::class); }
     public function user()     { return $this->belongsTo(User::class); }
     public function customer() { return $this->belongsTo(Customer::class); }

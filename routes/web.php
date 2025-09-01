@@ -76,6 +76,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::POST('/cat_product', [SaleController::class, 'fetchProductBycat'])->name('fetch_product_by_category');
     Route::resource('sale', SaleController::class);
     Route::get('sale-invoice/{id}', [SaleController::class, 'downloadInvoice'])->name('sale.invoice');
+    Route::get('due-sales', [SaleController::class, 'dueSales'])->name('salesdue.list');
+  Route::post('/sale/{sale}/update-due', [SaleController::class, 'updateDue'])->name('sale.updateDue');
     Route::resource('customer', CustomerController::class);
 });
 
