@@ -10,6 +10,9 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PermissionsController;
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\RolesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +32,13 @@ Auth::routes();
 
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('users', UsersController::class);
+    Route::get('/user/{id}', [App\Http\Controllers\UsersController::class, 'edit'])->name('user.edit');
+    Route::patch('/users/{id}', [UsersController::class, 'Userupdate'])->name('user_update');
+   Route::post('users/status-update', [App\Http\Controllers\UsersController::class,'statusUpdate'])->name('users.statusUpdate');
+
+    Route::resource('roles', RolesController::class);
+Route::resource('permissions', PermissionsController::class);
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
@@ -53,6 +63,9 @@ Route::resource('supplier', SupplierController::class);
 Route::post('/supplier/status-update', [SupplierController::class, 'statusUpdate'])->name('supplier.status.update');
 Route::resource('product', ProductController::class);
 Route::get('products/pdf', [ProductController::class, 'generateProductPDF'])->name('products.pdf');
+Route::get('products/stock', [ProductController::class, 'Productstock'])->name('products.stock');
+Route::post('fetch/product', [ProductController::class, 'fetchProduct'])->name('fetch_product');
+Route::post('stock/update', [ProductController::class, 'updateStock'])->name('products.stock.update');
 
 Route::post('/product/status-update', [ProductController::class, 'statusUpdate'])->name('product.status.update');
 Route::get('multiple/product/add', [ProductController::class, 'MultiProductAdd'])->name('multiproduct.add');

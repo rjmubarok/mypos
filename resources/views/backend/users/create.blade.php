@@ -9,15 +9,14 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
-                        @can('user-create')
+                        
                         <a href="{{route('users.create')}}" class="btn btn-info btn-sm"><i
                                 class="bi bi-plus-circle"></i>
-                            @lang('common.create')</a>
-                        @endcan
-                        @can('user-list')
+                           create</a>
+                        
                         <a href="{{route('users.index')}}" class="btn btn-info btn-sm"><i class="bi bi-list-task"></i>
-                            @lang('common.list')</a>
-                        @endcan
+                           list</a>
+                       
 
                     </div>
 
@@ -46,14 +45,7 @@
                         <span class="text-danger text-left">{{ $errors->first('email') }}</span>
                         @endif
                     </div>
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input value="{{ old('username') }}" type="text" class="form-control" name="username"
-                            placeholder="Username" required>
-                        @if ($errors->has('username'))
-                        <span class="text-danger text-left">{{ $errors->first('username') }}</span>
-                        @endif
-                    </div>
+                    
                     <div class="mb-3">
                         <label for="password" class="form-label">password</label>
                         <input value="{{ old('password') }}" type="password" class="form-control" name="password"

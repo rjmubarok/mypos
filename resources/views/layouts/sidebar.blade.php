@@ -65,6 +65,12 @@
                 <span>Product</span>
             </a>
         </li>
+        <li class="nav-item  {{ request()->routeIs('products.stock') ? 'active' : '' }} ">
+            <a class="nav-link" href="{{ route('products.stock') }}">
+                <i class="bi bi-house"></i>
+                <span>Stock Manage </span>
+            </a>
+        </li>
         <li class="nav-item  {{ request()->routeIs('sale.index') ? 'active' : '' }} ">
             <a class="nav-link" href="{{ route('sale.index') }}">
                 <i class="bi bi-house"></i>
@@ -84,7 +90,40 @@
             </a>
         </li>
 
+  <li class="nav-item ">
+            <a class="nav-link collapsed" data-bs-target="#sidebar-user" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-globe"></i><span>User Management</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="sidebar-user"
+                class="nav-content collapse {{ request()->routeIs('users.create', 'users.index', 'users.edit', 'users.show', 'roles.index', 'roles.edit', 'roles.show', 'roles.create', 'permissions.index', 'permissions.edit', 'permissions.show', 'permissions.create') ? 'show' : '' }} "
+                data-bs-parent="#sidebar-nav">
 
+                 <li>
+                    <a href="{{ route('users.index') }}"
+                        class="nav-link {{ request()->routeIs('users.index', 'users.edit', 'users.show') ? 'active' : '' }}">
+                        <i class="ri-bank-fill"></i><span>Users</span>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a href="{{ route('roles.index') }}"
+                        class="nav-link {{ request()->routeIs('roles.index', 'roles.edit', 'roles.show') ? 'active' : '' }}">
+                        <i class="ri-bank-fill"></i><span>Role</span>
+                    </a>
+                </li>
+                {{-- @endcan
+                @can('permissions-list') --}}
+                <li>
+                    <a href="{{ route('permissions.index') }}"
+                        class="nav-link {{ request()->routeIs('permissions.index', 'permissions.edit', 'permissions.show', 'permissions.create') ? 'active' : '' }}">
+                        <i class="ri-bank-fill"></i><span>Permissions</span>
+                    </a>
+                </li>
+                {{-- @endcan --}}
+
+            </ul>
+        </li>
     </ul>
 
 </aside>

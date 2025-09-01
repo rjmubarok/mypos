@@ -10,8 +10,8 @@
         <div class="card-header">
           <div class="d-flex justify-content-between">
             <a href="{{route('permissions.create')}}" class="btn btn-info btn-sm"><i class="bi bi-plus-circle"></i>
-              @lang('common.create')</a>
-            <a href="{{route('permissions.index')}}" class="btn btn-info btn-sm"><i class="bi bi-list-task"></i> @lang('common.list')</a>
+             Create</a>
+            <a href="{{route('permissions.index')}}" class="btn btn-info btn-sm"><i class="bi bi-list-task"></i>List</a>
           </div>
             <div class="d-flex justify-content-between">
                         @can('permission-create')
@@ -19,10 +19,10 @@
                                 class="bi bi-plus-circle"></i>
                             @endcan
 
-                            @lang('common.create')</a>
+                           Create</a>
                         @can('permission-list')
                         <a href="{{ route('permissions.index') }}" class="btn btn-info btn-sm"><i class="bi bi-list-task"></i>
-                            @lang('common.list')</a>
+                           List</a>
                         @endcan
 
                     </div>
@@ -62,16 +62,23 @@
 
 @endsection
 @section('scripts')
+@section('scripts')
 <script type="text/javascript">
-  var i = 0;
-  $("#dynamic-ar").click(function () {
-      ++i;
-      $("#dynamicAddRemove").append('<tr><td><input type="text" name="addMoreInputFields[' + i +
-          '][name]" placeholder="Enter  Name" class="form-control" /></td><td><button type="button" class="btn btn-outline-danger remove-input-field">Remove</button></td></tr>'
-          );
-  });
-  $(document).on('click', '.remove-input-field', function () {
-      $(this).parents('tr').remove();
-  });
+    $(document).ready(function () {
+        var i = 0;
+
+        // Add More button click
+        $('#dynamic-ar').off('click').on('click', function () {
+            ++i;
+            $('#dynamicAddRemove').append('<tr><td><input type="text" name="addMoreInputFields[' + i + '][name]" placeholder="Enter Name" class="form-control" /></td><td><button type="button" class="btn btn-outline-danger remove-input-field">Remove</button></td></tr>');
+        });
+
+        // Remove button click
+        $(document).off('click', '.remove-input-field').on('click', '.remove-input-field', function () {
+            $(this).closest('tr').remove();
+        });
+    });
 </script>
+@endsection
+
 @endsection

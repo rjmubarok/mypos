@@ -14,6 +14,69 @@ use PDF;
 
 class ProductController extends Controller
 {
+      public function fetchProduct(Request $request)
+    {
+        $data = Product::where('id', $request->product_id)->first();
+        //return response()->json($products);
+        return view('backend.product.stock_product', compact('data'))->render();
+    }
+    public function Productstock()
+    {
+        $products = Product::with('category', 'brand', 'supplier')->get();
+
+      return view('backend.product.stock', compact('products'));
+    }
+ public function updateStock(Request $request)
+{
+    $validator = \Validator::make($request->all(), [
+        'stock_status' => 'required|in:In,Out',
+        'product_id' => 'required|exists:products,id',
+        'stock' => 'required|numeric|min:1',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    $product = Product::find($request->product_id);
+    $current_stock = $product->stock;
+    $new_stock = $request->stock;
+
+    if ($request->stock_status == 'In') {
+        $product->stock = $current_stock + $new_stock;
+        $product->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Product Stock Incremented Successfully!',
+            'new_stock' => $product->stock
+        ]);
+    }
+
+    if ($request->stock_status == 'Out') {
+        if ($new_stock <= $current_stock) {
+            $product->stock = $current_stock - $new_stock;
+            $product->save();
+            return response()->json([
+                'success' => true,
+                'message' => 'Product Stock Decremented Successfully!',
+                'new_stock' => $product->stock
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Product Stock Out Of Current Stock!'
+            ]);
+        }
+    }
+
+    return response()->json([
+        'success' => false,
+        'message' => 'Something Went Wrong!'
+    ]);
+}
     public function generateProductPDF()
     {
         $products = Product::with('category', 'brand', 'supplier')->get();

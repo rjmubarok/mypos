@@ -9,16 +9,12 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
-                        @can('role-create')
+                       
                         <a href="{{ route('roles.create') }}" class="btn btn-info btn-sm"><i
-                                class="bi bi-plus-circle"></i>
-                            @endcan
-
-                            @lang('common.create')</a>
-                        @can('role-list')
-                        <a href="{{ route('roles.index') }}" class="btn btn-info btn-sm"><i class="bi bi-list-task"></i>
-                            @lang('common.list')</a>
-                        @endcan
+                                class="bi bi-plus-circle">Create</i>
+                        </a>
+                            <a href="{{ route('roles.index') }}" class="btn btn-info btn-sm"><i class="bi bi-list-task"></i>
+                            Roles</a>
 
                     </div>
 

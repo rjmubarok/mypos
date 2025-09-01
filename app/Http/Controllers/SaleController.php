@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Models\Product;
 use App\Models\Saleitem;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDF;
@@ -54,10 +55,20 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         try {
-            // Sale create
+             if ($request->customer_id === 'guest') {
+        // Guest customer create
+        $customer = Customer::create([
+            'name' => $request->guest_name ?? 'Walk-in Customer',
+            'phone' => $request->guest_phone ?? null,
+        ]);
+
+        $customerId = $customer->id;
+    } else {
+        $customerId = $request->customer_id;
+    }
             $sale = Sale::create([
                 'user_id'     => auth()->id(),
-                'customer_id' => $request->customer_id,
+                'customer_id' => $customerId,
                 'invoice_no'  => 'INV-' . now()->format('Ymd-His'),
                 'sold_at'     => $request->sold_at,
                 'subtotal'    => $request->subtotal,
@@ -177,7 +188,7 @@ class SaleController extends Controller
         }
          toast('Sale Update and stock updated successfully!', 'success');
         return redirect()->back()->with('success', 'Sale Update and stock updated successfully!');
-      
+
     }
 
 
