@@ -77,7 +77,17 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('sale', SaleController::class);
     Route::get('sale-invoice/{id}', [SaleController::class, 'downloadInvoice'])->name('sale.invoice');
     Route::get('due-sales', [SaleController::class, 'dueSales'])->name('salesdue.list');
-  Route::post('/sale/{sale}/update-due', [SaleController::class, 'updateDue'])->name('sale.updateDue');
+    Route::post('/sale/{sale}/update-due', [SaleController::class, 'updateDue'])->name('sale.updateDue');
+
+    Route::get('sales-report', [App\Http\Controllers\SaleController::class, 'SelseReport'])->name('sales.report');
+    Route::post('sales-report/datewise', [App\Http\Controllers\SaleController::class, 'datewiseReport'])->name('sales.report.datewise');
+    Route::post('sales-report/customerwise', [App\Http\Controllers\SaleController::class, 'customerwiseReport'])->name('sales.report.customerwise');
+
+    // PDF download
+    Route::get('sales-report/pdf/all', [App\Http\Controllers\SaleController::class, 'allSalesPDF'])->name('sales.report.pdf.all');
+    Route::get('sales-report/pdf/datewise', [App\Http\Controllers\SaleController::class, 'datewisePDF'])->name('sales.report.pdf.datewise');
+    Route::get('sales-report/pdf/customerwise', [App\Http\Controllers\SaleController::class, 'customerwisePDF'])->name('sales.report.pdf.customerwise');
+
     Route::resource('customer', CustomerController::class);
 });
 

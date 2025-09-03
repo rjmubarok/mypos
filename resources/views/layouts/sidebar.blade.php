@@ -95,6 +95,12 @@
                 <span>Due List</span>
             </a>
         </li>
+        <li class="nav-item  {{ request()->routeIs('sales.report') ? 'active' : '' }} ">
+            <a class="nav-link" href="{{ route('sales.report') }}">
+                <i class="bi bi-house"></i>
+                <span>Report</span>
+            </a>
+        </li>
         <li class="nav-item  {{ request()->routeIs('institute') ? 'active' : '' }} ">
             <a class="nav-link" href="{{ route('institute') }}">
                 <i class="bi bi-house"></i>

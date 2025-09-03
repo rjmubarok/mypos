@@ -144,7 +144,7 @@
             <div class="col-md-3 mt-2">
                 <label for="paid">Paid</label><br>
                 <input type="checkbox" id="paid" name="paid" value="1"
-                       {{ $sale->paid ? 'checked' : '' }}>
+                       {{ $sale->payment_status=='paid' ? 'checked' : '' }}>
             </div>
 
             <div class="col-md-3 mt-2" id="paidAmountBox" style="{{ $sale->paid ? '' : 'display:none;' }}">

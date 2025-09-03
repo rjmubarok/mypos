@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Dashboard')
+@section('title', 'Profile')
 @section('content')
 
 <div class="pagetitle">
@@ -20,7 +20,7 @@
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-            <img src="{{ asset(Auth::user()->photo?? "assets/img/profile-img.jpg") }} " alt="Profile" class="rounded-circle">
+            <img src="{{ asset(Auth::user()->photo?? "assets/img/profile-img.jpg") }} " alt="Profile" class="rounded-circle" height="100px">
             <h2>{{ Auth::user()->name }}</h2>
             <h3>{{Auth::user()->roles->pluck('name') }}</h3>
             <div class="social-links mt-2">
@@ -69,7 +69,7 @@
                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                         <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                         <div class="col-md-8 col-lg-9">
-                          <img   id="photo_preview-image" src="{{ asset(Auth::user()->photo?? "assets/img/profile-img.jpg") }}" alt="Profile">
+                          <img   id="photo_preview-image" src="{{ asset(Auth::user()->photo?? "assets/img/profile-img.jpg") }}" alt="Profile" class="rounded-circle" height="100px">
                           <div class="pt-2">
 
                         <input id="photo" placeholder="Choose image" class="form-control" type="file"

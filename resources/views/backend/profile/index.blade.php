@@ -20,7 +20,7 @@
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-            <img src="{{ asset(Auth::user()->photo?? "assets/img/profile-img.jpg") }}" alt="Profile" class="rounded-circle">
+            <img src="{{ asset(Auth::user()->photo?? "assets/img/profile-img.jpg") }}" alt="Profile" class="rounded-circle" height="150px">
             <h2>{{ Auth::user()->name }}</h2>
             <h3>{{Auth::user()->roles->pluck('name') }}</h3>
             <div class="social-links mt-2">

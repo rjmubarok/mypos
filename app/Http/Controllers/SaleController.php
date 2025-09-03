@@ -14,6 +14,63 @@ class SaleController extends Controller
 {
 
 
+    public function SelseReport()
+    {
+         $allSales = Sale::with('items.product', 'customer')
+                        ->orderBy('sold_at', 'desc') // latest first
+                        ->get();
+        $customers = Customer::all();
+        $dueSales = Sale::where('due_amount', '>', 0)->with('customer')->get();
+
+        return view('backend.report.reports', compact('allSales', 'customers', 'dueSales'));
+    }
+
+     // AJAX date-wise
+    public function datewiseReport(Request $request)
+    {
+        
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after_or_equal:start_date',
+        ]);
+        $start_date = date('Y-m-d', strtotime($request->start_date));
+        $end_date = date('Y-m-d', strtotime($request->end_date));
+
+       $sales = Sale::with('items.product', 'customer')
+                 ->whereDate('sold_at', '>=', $request->start_date)
+                 ->whereDate('sold_at', '<=', $request->end_date)
+                 ->orderBy('sold_at', 'desc')
+                 ->get();
+
+        return view('backend.report.partials.all', compact('sales'))->render();
+    }
+
+    // AJAX customer-wise
+    public function customerwiseReport(Request $request)
+    {
+        $request->validate(['customer_id' => 'required|exists:customers,id']);
+
+        $dueSales = Sale::where('customer_id', $request->customer_id)
+                     ->with('items.product', 'customer')->get();
+
+        return view('backend.report.partials.due', compact('dueSales'))->render();
+    }
+       public function datewisePDF(Request $request)
+    {
+        $sales = Sale::whereBetween('sold_at', [$request->start_date, $request->end_date])
+                     ->with('items.product', 'customer')->get();
+        $pdf = PDF::loadView('sale.pdf.all', compact('sales'));
+        return $pdf->download('datewise_sales.pdf');
+    }
+
+    // PDF Customer-wise
+    public function customerwisePDF(Request $request)
+    {
+        $sales = Sale::where('customer_id', $request->customer_id)
+                     ->with('items.product', 'customer')->get();
+        $pdf = PDF::loadView('sale.pdf.all', compact('sales'));
+        return $pdf->download('customerwise_sales.pdf');
+    }
     public function downloadInvoice($id)
     {
         //  return 'hello';
@@ -61,7 +118,7 @@ public function updateDue(Request $request, Sale $sale)
     {
         $customers = \App\Models\Customer::all();
         $products  = \App\Models\Product::all();
-        $sales = Sale::all();
+       $sales = Sale::orderBy('id', 'desc')->get();
         return view('backend.sales.index', compact('customers', 'products', 'sales'));
     }
     public function create()
@@ -184,6 +241,7 @@ public function updateDue(Request $request, Sale $sale)
         $sale->grand_total   = $request->grand_total;
         $sale->paid_amount          = $request->has('paid') ? 1 : 0;
         $sale->paid_amount   = $request->paid ? ($request->paid_amount ?? $sale->grand_total) : 0;
+        $sale->payment_status = ($request->paid_amount ?? 0) >= $request->grand_total ? 'paid' : 'partial';
 
         // $sale->due_amount    = $sale->grand_total - $sale->paid_amount;
         $sale->save();
