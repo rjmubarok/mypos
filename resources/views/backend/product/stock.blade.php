@@ -4,6 +4,14 @@
 <section class="section">
     <div class="row">
         <div class="col-lg-12">
+
+            {{-- 🔗 Low Stock Tab/Button --}}
+            <div class="mb-3">
+                <a href="{{ route('products.lowStock') }}" class="btn btn-danger">
+                    Low Stock
+                </a>
+            </div>
+
             <div class="card">
                 <div class="card-body">
                     <form id="stockForm" method="POST">
@@ -76,10 +84,8 @@ $('#product_id').on('change', function () {
 
 // AJAX submit form
 $(document).ready(function(){
-
-    // prevent duplicate binds
     $('#stockForm').off('submit').on('submit', function(e){
-        e.preventDefault(); // stop normal submit
+        e.preventDefault();
 
         $('#submitBtn').attr('disabled', true);
         $('#ajaxMessage').html('');
@@ -117,8 +123,6 @@ $(document).ready(function(){
             }
         });
     });
-
 });
-
 </script>
 @endsection

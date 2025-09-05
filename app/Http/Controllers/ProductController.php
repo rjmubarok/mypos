@@ -14,6 +14,13 @@ use PDF;
 
 class ProductController extends Controller
 {
+public function lowStock()
+{
+    // ধরুন 5 এর নিচে স্টক হলে Low Stock ধরা হচ্ছে
+    $lowStockProducts = Product::whereColumn('stock', '<=', 'alert_quantity')->get();
+
+    return view('backend.product.low_stock', compact('lowStockProducts'));
+}
       public function fetchProduct(Request $request)
     {
         $data = Product::where('id', $request->product_id)->first();

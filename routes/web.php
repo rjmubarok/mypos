@@ -69,6 +69,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('products/stock', [ProductController::class, 'Productstock'])->name('products.stock');
     Route::post('fetch/product', [ProductController::class, 'fetchProduct'])->name('fetch_product');
     Route::post('stock/update', [ProductController::class, 'updateStock'])->name('products.stock.update');
+    Route::get('/products/low-stock', [ProductController::class, 'lowStock'])->name('products.lowStock');
 
     Route::post('/product/status-update', [ProductController::class, 'statusUpdate'])->name('product.status.update');
     Route::get('multiple/product/add', [ProductController::class, 'MultiProductAdd'])->name('multiproduct.add');
