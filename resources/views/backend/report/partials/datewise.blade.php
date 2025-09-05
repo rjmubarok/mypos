@@ -1,3 +1,4 @@
+<a href="{{ route('sales.report.datewise.pdf', ['start_date' => request()->start_date, 'end_date' => request()->end_date]) }}" class="btn btn-primary mb-3">Download PDF</a>
 <table id="AllproductTable" class="table table-striped table-bordered table-hover">
     <thead class="table-primary">
         <tr>

@@ -14,6 +14,7 @@ use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\InstituteController;
+use App\Http\Controllers\SalesReportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -80,15 +81,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('due-sales', [SaleController::class, 'dueSales'])->name('salesdue.list');
     Route::post('/sale/{sale}/update-due', [SaleController::class, 'updateDue'])->name('sale.updateDue');
 
-    Route::get('sales-report', [App\Http\Controllers\SaleController::class, 'SelseReport'])->name('sales.report');
-    Route::post('sales-report/datewise', [App\Http\Controllers\SaleController::class, 'datewiseReport'])->name('sales.report.datewise');
-    Route::post('sales-report/customerwise', [App\Http\Controllers\SaleController::class, 'customerwiseReport'])->name('sales.report.customerwise');
+    Route::get('/sales-report', [SalesReportController::class, 'index'])->name('sales.report');
+Route::get('/sales-report/pdf/all', [SalesReportController::class, 'allPDF'])->name('sales.report.pdf.all');
 
-    // PDF download
-    Route::get('sales-report/pdf/all', [App\Http\Controllers\SaleController::class, 'allSalesPDF'])->name('sales.report.pdf.all');
-    Route::get('sales-report/pdf/datewise', [App\Http\Controllers\SaleController::class, 'datewisePDF'])->name('sales.report.pdf.datewise');
-    Route::get('sales-report/pdf/customerwise', [App\Http\Controllers\SaleController::class, 'customerwisePDF'])->name('sales.report.pdf.customerwise');
+// AJAX Routes
+Route::post('/sales-report/datewise', [SalesReportController::class, 'datewise'])->name('sales.report.datewise');
 
+Route::get('/sales-report/pdf/datewise', [SalesReportController::class, 'datewisePDF'])->name('sales.report.datewise.pdf');
+
+Route::post('/sales-report/customerwise', [SalesReportController::class, 'customerwise'])->name('sales.report.customerwise');
+Route::get('/sales-report/pdf/customerwise', [SalesReportController::class, 'customerwisePDF'])->name('sales.report.customerwise.pdf');
     Route::resource('customer', CustomerController::class);
 });
 
